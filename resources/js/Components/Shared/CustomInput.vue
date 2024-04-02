@@ -77,7 +77,8 @@
                 :max="max"
                 :id="id"
                 :placeholder="text"
-                :disabled="disabled">
+                :disabled="disabled"
+                :value="modelValue">
         </div>
     </div>
 </template>

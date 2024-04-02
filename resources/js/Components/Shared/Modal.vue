@@ -1,7 +1,7 @@
 <script setup>
     const props = defineProps({
 
-        hasActionButon: {
+        hasActionButton: {
             type: Boolean,
             default: false,
         },
@@ -14,6 +14,11 @@
         closeButtonColor: {
             type: String,
             default: 'btn-secondary',
+        },
+
+        closeButtonFunction: {
+            type: Function,
+            default: function () {},
         },
 
         actionButtonText: {
@@ -57,8 +62,8 @@
                     <button 
                         type="button" 
                         class="btn-close" 
-                        data-bs-dismiss="modal" 
-                        aria-label="Close"></button>
+                        aria-label="Close"
+                        @click="closeButtonFunction"></button>
                 </div>
                 <div class="modal-body">
                     <slot></slot>
@@ -67,13 +72,14 @@
                     <button 
                         type="button" 
                         :class="['btn', closeButtonColor]" 
-                        data-bs-dismiss="modal">
+                        @click="closeButtonFunction">
                         {{ closeButtonText }}
                     </button>
                     <button 
-                        v-if="hasActionButon"
+                        v-if="hasActionButton"
                         type="button" 
-                        :class="['btn', actionButtonColor]">
+                        :class="['btn', actionButtonColor]"
+                        @click="actionButtonFunction">
                         {{ actionButtonText }}
                     </button>
                 </div>
