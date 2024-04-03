@@ -10,6 +10,8 @@ class EthylAcetate extends Model
 {
     use HasFactory;
     protected $table = "acetatos_etilos";
+    protected $fillable = ['lote', 'marca'];
+    public $timestamps = false;
 
     public function analysis ()
     {

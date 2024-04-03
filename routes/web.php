@@ -42,7 +42,11 @@ Route::controller(EquipmentController::class)->group(function () {
 });
 
 Route::controller(EthylAcetatesController::class)->group(function () {
-    Route::get('/ethyl-acetates', 'index');
+    Route::get('/ethyl-acetates', 'index')
+        ->name('ethylAcetates.index');
+    Route::get('/get-ethyl-acetates', 'getEthylAcetates');
+    Route::post('/ethyl-acetates', 'store')
+        ->name('ethylAcetates.create');
 });
 
 Route::controller(ZincSulfatesController::class)->group(function () {

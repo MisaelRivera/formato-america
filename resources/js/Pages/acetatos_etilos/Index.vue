@@ -1,47 +1,75 @@
 <script setup>
+    import axios from 'axios';
     import { ref } from 'vue';
-    import { useForm } from '@inertiajs/vue3';
-    import { Link } from '@inertiajs/vue3';
+    import { Link, useForm, usePage, router } from '@inertiajs/vue3';
     import GuestLayout from '@/Layouts/GuestLayout.vue';
     import ModalBtn from '@/Components/Shared/ModalBtn.vue';
     import Modal from '@/Components/Shared/Modal.vue';
-    import CustomInput from '@/Components/Shared/CustomInput.vue';
+    import CustomeInput from '@/Components/Shared/CustomeInput.vue';
+
+    /* =====================================================
+                        PROPS
+     ======================================================== */
     const props = defineProps({
         ethylAcetatesProp: {
             required: true
-        }
+        },
+        errors: Object,
     });
-    
-    const ethylAcetates = props.ethylAcetatesProp.data;
-    let createForm = useForm({
+
+    const page = usePage();
+    let ethylAcetates = ref(props.ethylAcetatesProp.data);
+    const createForm = useForm({
             lote: null,
             marca: null,
-          }),
-          lote = ref(null),
-          marca = ref(null);
-    const createEthyl = () => {
-        console.log(createForm);
-    },
+          });
 
-    openCreateModal = () => {
-        const createEthylModal =  bootstrap.Modal.getInstance(document.getElementById('create-ethyl-modal'));
-        createEthylModal.show();
-    },
+    /* =====================================================
+                        METHODS
+     ======================================================== */
 
-    resetCreateForm = () => {
+    // Opening and closing modal methods
+
+    const closeCreateModal = () => {
         createForm.reset();
         const createEthylModal = bootstrap.Modal.getInstance(document.getElementById('create-ethyl-modal'));
         createEthylModal.hide();
-    },
-
-    test = () => {
-        lote.value = 'Juan';
-        marca.value = 'Joe';
     };
+
+    const openCreateModal = () => {
+        const createEthylModal =  bootstrap.Modal.getInstance(document.getElementById('create-ethyl-modal'));
+        createEthylModal.show();
+    };
+
+    // Forms Methods
+    const createEthyl = async() => {
+        try {
+            await createForm.post('/ethyl-acetates');
+            if (!createForm.errors) {
+                closeCreateModal();
+                const res = await axios.get('get-ethyl-acetates');
+                ethylAcetates.value = res.data.data;
+            } else {
+                console.log(createForm.errors);
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    };
+
+
 </script>
 <template>
     <GuestLayout>
         <div class="container">
+            <div class="alert alert-success alert-dismissible fade show" v-if="page.props.flash.message">
+                {{ page.props.flash.message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="alert alert-danger alert-dismissible fade show" v-if="page.props.flash.error">
+                {{ page.props.flash.error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
             <div class="row">
                 <div class="col-md-8 offset-md-2">
                     <h2 class="create-title mt-3">
@@ -82,67 +110,29 @@
             action-button-text="Crear"
             action-button-color="btn-success"
             :action-button-function="createEthyl"
-            :close-button-function="resetCreateForm"
+            :close-button-function="closeCreateModal"
             target="create-ethyl-modal">
             <form>
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="mb-4">
-                                <label for="lote">Lote</label>
-                                <input 
-                                    type="text"
-                                    v-model="createForm.lote"
-                                    id="lote"
-                                    class="form-control"
-                                    placeholder="Lote">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-4">
-                                <label for="marca">Marca</label>
-                                <input 
-                                    type="text"
-                                    v-model="createForm.marca"
-                                    id="marca"
-                                    class="form-control">
-                            </div>
-                        </div>
-                        <!--<CustomInput 
+                        <CustomeInput 
                             name="lote"
                             text="Lote"
                             type="text"
                             v-model="createForm.lote"
-                            size="col-md-6"/>
-                        <CustomInput 
+                            size="col-md-6"
+                            :error="createForm.errors.lote"/>
+                        <CustomeInput 
                             name="marca"
                             text="Marca"
                             type="text"
                             v-model="createForm.marca"
-                            size="col-md-6"/>-->
+                            size="col-md-6"
+                            :error="createForm.errors.marca"/>
                     </div>
                 </div>
             </form>
         </Modal>
-        <div class="row">
-            <CustomInput 
-                name="lote"
-                text="Lote"
-                type="text"
-                v-model="lote"
-                size="col-md-6"/>
-            <CustomInput 
-                name="marca"
-                text="Marca"
-                type="text"
-                v-model="marca"
-                size="col-md-6"/>
-        </div>
-        <div class="row">
-            <div class="col-md-6 offset-md-3">
-                <button class="btn btn-primary" @click="test">Test</button>
-            </div>
-        </div>
     </GuestLayout>
 </template>
 <style>

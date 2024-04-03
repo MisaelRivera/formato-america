@@ -47,6 +47,11 @@
             default: null,
         },
 
+        error: {
+            type: String,
+            default: '',
+        },
+
         text: String,
 
         type: {
@@ -79,6 +84,7 @@
                 :placeholder="text"
                 :disabled="disabled"
                 :value="modelValue">
+            <h3 v-if="error" class="text-danger">{{ error }}</h3>
         </div>
     </div>
 </template>
