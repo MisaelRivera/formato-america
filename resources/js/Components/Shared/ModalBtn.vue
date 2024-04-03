@@ -21,7 +21,7 @@
             default: false,
         },
 
-        openFuction: {
+        openFunction: {
             type: Function,
             default: function () {},
         },
@@ -48,14 +48,13 @@
             v-if="btnStyle"
             type="button" 
             :class="['btn', btnColor, ...classes]"
-            @click="openFuction">
+            @click="openFunction">
             {{ btnText }}
         </button>
     
         <a
             v-else
-            data-bs-toggle="modal"
-            :data-bs-target="`#${target}`">
+            @click="openFunction">
             {{ btnText }}
         </a>
     </template>
@@ -63,6 +62,5 @@
         :class="['fas', icon, ...classes]" 
         type="button"
         v-else
-        data-bs-toggle="modal"
-        :data-bs-target="`#${target}`"></i>
+        @click="openFunction"></i>
 </template>

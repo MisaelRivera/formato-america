@@ -34,7 +34,7 @@ class Analysis extends Model
 
     public function ethylAcetate ()
     {
-        return $this->belongsTo(EthylAcetate::class, 'lote_acetato_etilo', 'lote');
+        return $this->belongsTo(EthylAcetate::class, 'id_acetato_etilo', 'id');
     }
 
     public function sampleData ()

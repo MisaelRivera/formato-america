@@ -10,11 +10,11 @@ class EthylAcetate extends Model
 {
     use HasFactory;
     protected $table = "acetatos_etilos";
-    protected $fillable = ['lote', 'marca'];
+    protected $fillable = ['lote', 'marca', 'obsoleto'];
     public $timestamps = false;
 
     public function analysis ()
     {
-        return $this->hasMany(Analysis::class, 'lote_acetato_etilo', 'lote');
+        return $this->hasMany(Analysis::class, 'id_acetato_etilo', 'id');
     }
 }

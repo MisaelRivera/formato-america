@@ -84,7 +84,7 @@
                 :placeholder="text"
                 :disabled="disabled"
                 :value="modelValue">
-            <h3 v-if="error" class="text-danger">{{ error }}</h3>
+            <p v-if="error" class="text-danger">{{ error }}</p>
         </div>
     </div>
 </template>
