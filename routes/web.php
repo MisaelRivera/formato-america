@@ -52,6 +52,7 @@ Route::controller(EthylAcetatesController::class)->group(function () {
         ->name('ethylAcetates.create');
     Route::put('/ethyl-acetates/{id}', 'update')
         ->name('ethylAcetates.update');
+    Route::patch('/ethyl-acetates/set-obsolete/{id}', 'setObsolete');
 });
 
 Route::controller(ZincSulfatesController::class)->group(function () {

@@ -56,6 +56,19 @@ class EthylAcetatesController extends Controller
             ->with('message', 'Se ha actualizado el acetato de etilo correctamente');
     }
 
+    public function setObsolete ($id)
+    {
+        $ethylAcetate = EthylAcetate::where('id', $id)
+            ->first();
+        $ethylAcetate->obsoleto = 1;
+
+        $ethylAcetate->save();
+
+        return redirect()
+            ->route('ethylAcetates.index')
+            ->with('message', "Se ha hecho obsoleto el acetato de etilo con lote $ethylAcetate->lote");
+    }
+
     public function getEthylAcetates ()
     {
         $ethylAcetates = EthylAcetate::where('obsoleto', 0)

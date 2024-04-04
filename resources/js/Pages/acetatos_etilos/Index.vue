@@ -88,7 +88,7 @@
              createForm.post('/ethyl-acetates', {
                 onSuccess: async(page) => {
                     closeCreateModal();
-                    const res = await axios.get('get-ethyl-acetates');
+                    const res = await axios.get('/get-ethyl-acetates');
                     ethylAcetates.value = res.data.data;
                     showMessage.value = true;
                 }
@@ -103,7 +103,7 @@
             editForm.put(`/ethyl-acetates/${editForm.id}`, {
                 onSuccess: async (page) => {
                     closeEditModal();
-                    const res = await axios.get('get-ethyl-acetates');
+                    const res = await axios.get('/get-ethyl-acetates');
                     ethylAcetates.value = res.data.data;
                     showMessage.value = true;
                 }
@@ -113,8 +113,16 @@
         }
     };
 
-    const setEthylObsolete = () => {
-
+    const setEthylObsolete = async() => {
+        try {
+            await axios.patch(`/ethyl-acetates/set-obsolete/${idObsoleto.value}`);
+            closeObsoleteModal();
+            const res = await axios.get('/get-ethyl-acetates');
+            ethylAcetates.value = res.data.data;
+            showMessage.value = true;
+        } catch (error) {
+            console.log(error);
+        }
     };
 
 
